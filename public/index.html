@@ -7,11 +7,12 @@
 
     <!-- Stylesheets see if git updates one more time-->
     <link rel="stylesheet" href="./css/styles.css">
-
+    <link href="src/css/angular-datepicker.css" rel="stylesheet" type="text/css" />
     <!-- Angular Scripts -->
     <!-- NOTE: removing the ".min." can help debugging in the console-->
     <script src="./lib/angular/angular.min.js"></script>
     <script src="./lib/angular-route/angular-route.min.js"></script>
+    <script src="./lib/angularjs-datepicker/src/js/angular-datepicker.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/controllers.js"></script>
     <script src="./js/services.js"></script>
@@ -20,15 +21,16 @@
 <body ng-app="mp4">
 
     <div class="row text-center">
+        <h1 style="font-size:70px;"align="center">My Task Manager</h1>
     	<a class="button" href="#/settings">Settings</a>
-    	<a class="button" href="#/llamalist">Llama List</a>
-        <a class="button" href="#/firstview">First View</a>
-        <a class="button" href="#/secondview">Second View</a>
+    	<a class="button" href="#/userlist">Users</a>
+        <a class="button" href="#/tasklist">Tasks</a>
     </div>
 
     <div ng-view></div>
 
     <!-- Scripts -->
+
     <script src="./lib/jquery/dist/jquery.min.js"></script>
     <script src="./lib/foundation-sites/dist/foundation.min.js"></script>
     <script src="./js/script.js"></script>

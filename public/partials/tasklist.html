@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body> 
+  <div class="Header">
+      <h1 style="font-size:40px;"align="center">Tasks</h1>
+      <p style="font-size:20px;" align="center"> List of Tasks</p>
+  </div>
+  <div class="row text-right">
+    <a class="button success" href="#/addtask">Add Task</a>
+  </div>
+  <div class="row">
+    <p>Sort by:</p>
+    <select class="selectSort "ng-model="selectedSort" ng-options="x for x in sorts"></select>
+      <div class= "large-12 columns">
+        <!-- Add different format for pending completed all -->
+        <label><input type="checkbox"  ng-true-value="false" ng-model="">ascending </label>
+        <label><input type="checkbox"  ng-true-value="true" ng-model="">descending</label>
+        <label><input type="checkbox"  ng-true-value="true" ng-model="">Pending</label>
+        <label><input type="checkbox"  ng-true-value="true" ng-model="">Completed</label>
+        <label><input type="checkbox"  ng-true-value="true" ng-model="">All</label>
+      </div>
+      <ul class="pagination" role="menubar" aria-label="Pagination">
+        <li class="arrow unavailable" aria-disabled="true"><a href="" ng-click='getPrevTasks()'>&laquo; Previous</a></li>
+        <li class="arrow"><a href="" ng-click="getNextTasks()">Next &raquo;</a></li>
+      </ul>
+      <div class="UserResults" ng-repeat="task in tasks">
+        <button class="buttonClass" ng-click=""/> 
+        <a ng-href="#taskdetails/{{SomeTask}}">
+          <h3>Task Name: {{task.name}}</h3>
+          <h3>Assigned to: {{task.assignedUserName}}</h3><br>
+        </a> 
+        <a class="button alert" ng-click="deleteTheTask(task._id)">Delete Task</a>
+      </div>
+  </div> 
+
+
+
+
+
+</body>
+
+<!--  <div class="row text-right">
+    <a class="button success" href="#/adduser">Add User</a>
+  </div>
+  <div class="row">
+    <span> The users are</span>
+      <div class="UserResults" ng-repeat="user in users">
+        <button class="buttonClass" ng-click=""/> 
+        <a ng-href="#userdetails/{{SomeUser}}">
+          <h3>{{user.name}}</h3>
+          <h3>{{user.email}}</h3><br>
+        </a> 
+        <a class="button alert" ng-click="deleteTheUser(user._id)">Delete User</a>
+      </div>
+  </div>
+-->
+
+<!-- 
+    <div class="list">
+    First Controller
+    <form>
+      <div class="row">
+            <div class="small-12 columns">
+              <input ng-model="data" type="text" placeholder="data">
+            </div>
+        </div>
+
+      <div class="text-center">
+        <button ng-click="setData()" class="button tiny info">Set Data</button>
+      </div>
+      <div class="row text-right">
+        <a class="button" href="#/addtask">Add Task</a>
+      </div>
+
+      {{displayText}}
+
+    </form>
+  </div>
+  -->

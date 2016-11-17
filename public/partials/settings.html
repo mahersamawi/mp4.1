@@ -1,16 +1,32 @@
-<div class="list">
-	<form>
-	  <div class="row">
-          <div class="small-12 columns">
-            <input ng-model="url" type="text" placeholder="URL">
-          </div>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <div class="Header">
+    <h1 style="font-size:40px;"align="center">Settings</h1>
+    <p style="font-size:20px;" align="center"> Set your backend URL</p>
+  </div>
+  <div class="list">
+  	<form>
+  	  <div class="row">
+            <div class="small-12 columns">
+              <input ng-model="url" type="text" placeholder="URL">
+            </div>
+        </div>
+
+      <div class="text-center">
+        <button ng-click="setUrl()" class="button tiny info">Set URL</button>
       </div>
 
-    <div class="text-center">
-      <button ng-click="setUrl()" class="button tiny info">Set URL</button>
-    </div>
+      {{displayText}}
 
-    {{displayText}}
+    </form>
+  </div>
 
-  </form>
-</div>
+</body>

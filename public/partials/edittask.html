@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+	<div class="Header">
+		<h1 style="font-size:40px;"align="center">Add Task</h1>
+	</div>
+	<div class="list">
+		<div class="list">
+			<form>
+				<div class="row">
+					<div class="small-12 columns">
+						<span>Name</span>
+						<input ng-model="name" type="text" placeholder="The Current Value Should be here">
+						<span>Description</span>
+						<input ng-model="description" type="text" placeholder="Current Description">
+						<span>Deadline</span>
+						<input ng-model="Deadline" type="text" placeholder="Current DeadlineNeed to put Calendar">
+						<span>Assigned User</span>
+						<input ng-model="name" type="text" placeholder="Current User Drop Down Menu of Users Needed">
+						<span> Completed:</span>
+						<select> <option ng-repeat="x in YesOrNo">{{x}}</option></select>
+						<div class="row text-center">
+							<a class="button" href="#/addtask">Submit(Doesn't do anything)</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>

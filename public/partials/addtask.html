@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+	<div class="Header">
+		<h1 style="font-size:40px;"align="center">Add Task</h1>
+	</div>
+	<div class="list">
+		<div class="list">
+			<form data-abide ng-submit="addTheTask(name,description,deadline,assignedUser.name)" >
+				<div class="row">
+					<div class="small-12 columns">
+					<div class="name-field">
+						<label>Name <small>*</small>
+							<input ng-model="name" type="text" placeholder="Name" required>
+						</label>
+					</div>
+					<div class="description-field">
+						<label>Description
+							<input ng-model="description" type="text" placeholder="Description" required >
+						</label>
+					</div>
+					<div class="deadline-field">
+						<label>Deadline <small>*</small> <!-- fix this -->
+							<datepicker date-format="yyyy-MM-dd" selector="form-control">
+  							 <div class="input-group">
+        						<input ng-model="deadline" class="form-control" placeholder="Choose a date"/>
+        							<span class="input-group-addon" style="cursor: pointer">
+        								<i class="fa fa-lg fa-calendar"></i>
+       								</span>
+    						</div>
+							</datepicker>
+						</label>
+					</div>
+					<div class="assignedUser-field">
+						<label>Assigned User 
+							
+								<select ng-model="assignedUser" ng-options="user.name for user in users"> </select>
+							
+						</label>
+					</div>
+						<div class="row text-center">
+							<button type="submit"  class="medium button green"> Submit</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+<!--
+				<form data-abide ng-submit="addTheUser(name,email)" >
+				<div class="row">
+					<div class="small-12 columns">
+						<div class="name-field">
+							<label>Name <small>*</small>
+								<input ng-model="name" type="text" placeholder="Name" required pattern="[a-zA-Z]+">
+							</label>
+						</div>
+						<div class="email-field">
+							<label>Email <small>*</small>
+								<input ng-model="email" type="email" placeholder="Email" required >
+							</label>
+						</div>
+						<div class="row text-center">
+							<button type="submit"  class="medium button green"> Submit</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+
+									<span>Name</span>
+						<input ng-model="name" type="text" placeholder="Name">
+						<span>Description</span>
+						<input ng-model="description" type="text" placeholder="Description">
+						<span>Deadline</span>
+						<input ng-model="Deadline" type="text" placeholder="Need to put Calendar">
+						<span>Assigned User</span>
+						<input ng-model="name" type="text" placeholder="Drop Down Menu of Users Needed">
+						<div class="row text-center">
+							<a class="button" href="#/addtask">Submit(Doesn't do anything)</a>
+						</div>
+			-->

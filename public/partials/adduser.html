@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+	<div class="Header">
+		<h1 style="font-size:40px;"align="center">Add user</h1>
+	</div>
+	<div class="list">
+			<form data-abide ng-submit="addTheUser(name,email)" >
+				<div class="row">
+					<div class="small-12 columns">
+						<div class="name-field">
+							<label>Name <small>*</small>
+								<input ng-model="name" type="text" placeholder="Name" required pattern="[a-zA-Z]+">
+							</label>
+						</div>
+						<div class="email-field">
+							<label>Email <small>*</small>
+								<input ng-model="email" type="email" placeholder="Email" required >
+							</label>
+						</div>
+						<div class="row text-center">
+							<!-- <a type="submit"class="button" href="#/adduser">Submit(Doesn't do anything)</a> pattern="email" -->
+							<button type="submit"  class="medium button green"> Submit</button>
+						</div>
+					</div>
+				</div>
+			</form>
+	</div>
+</body>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+	<div class="Header">
+	    <h1 style="font-size:40px;"align="center">Users</h1>
+	    <p style="font-size:20px;" align="center"> List of Users</p>
+	</div>
+	<div class="row text-right">
+		<a class="button success" href="#/adduser">Add User</a>
+	</div>
+	<div class="row">
+			<div class="UserResults" ng-repeat="user in users">
+				<button class="buttonClass" ng-click="pickUser(user._id)"/> 
+				<a ng-href="#userdetails/{{user._id}}">
+					<h3>{{user.name}}</h3>
+					<h3>{{user.email}}</h3><br>
+				</a> <!-- IS it OK that I get the name email and id, so i can pass in the id to deletee that user?-->
+				<a class="button alert" ng-click="deleteTheUser(user._id)">Delete User</a>
+			</div>
+	</div>
+</body>
