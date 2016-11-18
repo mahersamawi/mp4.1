@@ -46,14 +46,16 @@ mp4Controllers.controller('FirstController', ['$scope', '$http', 'CommonData', '
   $scope.YesOrNo = ["Yes", "No"];
 }]);
 
-mp4Controllers.controller('SecondController', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', '$window', function($scope, $http, addUser, $routeParams, CommonData, $window) {
+mp4Controllers.controller('SecondController', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
   $scope.data = "";
   $scope.added = "";
-  alert(String($routeParams.selectedUser));
   $scope.userPicked = $routeParams.selectedUser;
   $scope.getData = function(){
     $scope.data = CommonData.getData();
   };
+  getUser.get($scope.userPicked).success(function(data){
+        $scope.userPicked = data.data;
+      });
   // have function to get the user from the _id in the selectedUser
   // name and email and list of pending tasks
   // have button to complete the task and make api call to refresh view (like delete)
@@ -63,14 +65,25 @@ mp4Controllers.controller('SecondController', ['$scope', '$http' ,'CommonData' ,
   $scope.addTheUser = function(a,b){
     addUser.add(a,b); //need error check
   };
+  $scope.getTaskNames = function(task_ids){
+    var ret_array = [];
+    alert("helo");
+    for (i = 0; i < task_ids.length; i++){
+      ret_arrary.push(getTask.get(task_ids[i]).success(
+        function(data){
+          alert("here");
+          return data.data;
+        }));
+    }
+    return ret_arrary;
+  }
 
 }]);
 
 
-mp4Controllers.controller('LlamaListController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','$window' , function($scope, $http,  getUsers, deleteUser, addTask, $window) {
+mp4Controllers.controller('LlamaListController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getUser', '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getUser, $window) {
 
   $scope.pickUser = function(a){
-    alert(a);
       $scope.selectedUser = a;
   }
   $scope.getAllUsers = function() {
@@ -87,8 +100,11 @@ mp4Controllers.controller('LlamaListController', ['$scope', '$http', 'getUsers',
     deleteUser.delete(a).success(function(data){
     $scope.getAllUsers();
     });
-
   };
+  $scope.pickUser = function(user_id){
+    //alert(user_id);
+    $scope.selectedUser = user_id;
+  }
 
 
 }]);

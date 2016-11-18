@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-	<div class="Header">
-	    <h1 style="font-size:40px;"align="center">User Profile</h1>
-	    <p style="font-size:20px;" align="center"> List of Users</p>
-	    the user is {{userPicked}}
-	</div>
+	<div class="Header" ng-repeat="user in userPicked">
+	    <h1 style="font-size:50px;"align="center">User Profile</h1><br>
+	    <h1 style="font-size:40px;"align="center">{{user.name}}</h1>
+ 		<h1 style="font-size:30px;"align="center">{{user.email}}</h1>
+ 		The pending tasks:	    
+ 		<h1 style="font-size:10px;"align="center"> {{user.pendingTasks}}</h1>	
+ 	</div>
 	<div class="row">
 
 	</div>

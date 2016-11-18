@@ -21,6 +21,17 @@ mp4Services.factory('getUsers', function($http, $window) {
         }
     }
 });
+mp4Services.factory('getUser', function($http, $window) {
+    return {
+        get : function(user_id) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            alert(user_id);
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"}   
+            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": "582d2a2bea9279f470e22c33"}');
+        }
+    }
+});
 
 mp4Services.factory('getTasks', function($http, $window) {
     return {
@@ -28,6 +39,18 @@ mp4Services.factory('getTasks', function($http, $window) {
             var baseUrl = $window.sessionStorage.baseurl;
             //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
             return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUser":1,"assignedUserName":1}&skip='+a+'&limit=10');
+        }
+    }
+});
+
+mp4Services.factory('getTask', function($http, $window) {
+    return {
+        get : function(a) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            var stringQuotesA = "'"+a+"'";
+            alert(stringQuotesA);
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA);
         }
     }
 });
