@@ -13,7 +13,7 @@
 	</div>
 	<div class="list">
 		<div class="list">
-			<form data-abide ng-submit="addTheTask(name,description,deadline,assignedUser.name)" >
+			<form data-abide ng-submit="addTheTask(name,description,deadline,assignedUser.name,assignedUser._id)" >
 				<div class="row">
 					<div class="small-12 columns">
 					<div class="name-field">
@@ -40,13 +40,11 @@
 					</div>
 					<div class="assignedUser-field">
 						<label>Assigned User 
-							
 								<select ng-model="assignedUser" ng-options="user.name for user in users"> </select>
-							
 						</label>
 					</div>
 						<div class="row text-center">
-							<button type="submit"  class="medium button green"> Submit</button>
+							<button type="submit"  class="medium button green"> Submit as {{assignedUser._id}}</button>
 						</div>
 					</div>
 				</div>

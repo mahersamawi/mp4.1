@@ -25,10 +25,12 @@ mp4Services.factory('getUser', function($http, $window) {
     return {
         get : function(user_id) {
             var baseUrl = $window.sessionStorage.baseurl;
-            alert(user_id);
+            //alert("the user id is" + user_id);
             //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
-            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"}   
-            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": "582d2a2bea9279f470e22c33"}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
+            var stringQuotesA = "'"+user_id+"'";
+            //alert(stringQuotesA);  
+            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}');
         }
     }
 });
@@ -49,8 +51,8 @@ mp4Services.factory('getTask', function($http, $window) {
             var baseUrl = $window.sessionStorage.baseurl;
             //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
             var stringQuotesA = "'"+a+"'";
-            alert(stringQuotesA);
-            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA);
+            //alert(stringQuotesA);
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA + '}');
         }
     }
 });
@@ -66,11 +68,11 @@ mp4Services.factory('getCount', function($http, $window) {
 });
 mp4Services.factory('addTask', function($http, $window) {
     return {
-        add : function(username, description_input, deadline_input, assignedUser_input) {
+        add : function(username, description_input, deadline_input, assignedUser_input, assignedUserID) {
             var baseUrl = $window.sessionStorage.baseurl;
             //alert(a); // pass in name and email, check for errors too
             //alert(b);
-            data = { name: username, description: description_input, deadline: deadline_input, assignedUserName: assignedUser_input }; // should have the assigned user id too?
+            data = { name: username, description: description_input, deadline: deadline_input, assignedUserName: assignedUser_input, assignedUser: assignedUserID }; // should have the assigned user id too?
             $http.post('http://www.uiucwp.com:4000/api/tasks', data).then(function()
                 { alert("Task " + username + " Created");}, 
                 function()
@@ -82,6 +84,7 @@ mp4Services.factory('addTask', function($http, $window) {
 mp4Services.factory('addUser', function($http, $window) {
     return {
         add : function(a,b) {
+            //alert("wtf");
             var baseUrl = $window.sessionStorage.baseurl;
             //alert(a); // pass in name and email, check for errors too
             //alert(b);

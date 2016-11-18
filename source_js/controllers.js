@@ -1,6 +1,17 @@
 var mp4Controllers = angular.module('mp4Controllers', []);
 
-mp4Controllers.controller('FirstController', ['$scope', '$http', 'CommonData', 'getTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, CommonData, getTasks, deleteTask, getCount, $window) {
+// edit Task
+mp4Controllers.controller('editTaskListController', ['$scope', '$http', 'CommonData', 'getTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, CommonData, getTasks, deleteTask, getCount, $window) {
+  $scope.data = "";
+  $scope.displayText = ""
+  $scope.resultsNumber = 0;
+}]);
+
+
+
+
+// Task List
+mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData', 'getTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, CommonData, getTasks, deleteTask, getCount, $window) {
   $scope.data = "";
   $scope.displayText = ""
   $scope.resultsNumber = 0;
@@ -46,9 +57,15 @@ mp4Controllers.controller('FirstController', ['$scope', '$http', 'CommonData', '
   $scope.YesOrNo = ["Yes", "No"];
 }]);
 
-mp4Controllers.controller('SecondController', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
+
+// User Details
+mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
   $scope.data = "";
   $scope.added = "";
+  $scope.taskNames = [];
+  $scope.deadlines = [];
+  $scope.taskID = [];
+  $scope.buttonClicked = false;
   $scope.userPicked = $routeParams.selectedUser;
   $scope.getData = function(){
     $scope.data = CommonData.getData();
@@ -56,44 +73,44 @@ mp4Controllers.controller('SecondController', ['$scope', '$http' ,'CommonData' ,
   getUser.get($scope.userPicked).success(function(data){
         $scope.userPicked = data.data;
       });
+
   // have function to get the user from the _id in the selectedUser
   // name and email and list of pending tasks
   // have button to complete the task and make api call to refresh view (like delete)
   // Show completed tasks, api call 
   // Each click makes api call
 
-  $scope.addTheUser = function(a,b){
-    addUser.add(a,b); //need error check
-  };
   $scope.getTaskNames = function(task_ids){
-    var ret_array = [];
-    alert("helo");
-    for (i = 0; i < task_ids.length; i++){
-      ret_arrary.push(getTask.get(task_ids[i]).success(
-        function(data){
-          alert("here");
-          return data.data;
-        }));
-    }
-    return ret_arrary;
+    // make get call
+    getTask.get(task_ids).success(function(data){
+      //alert("here");
+      $scope.taskNames.push(_.chain(data.data).pluck('name').flatten().value().toString());
+      $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
+      $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
+      console.log($scope.taskNames.length);
+    });
+  }
+  $scope.showCompleted = function(){
+    // api call to get the completed tasks
+    $scope.buttonClicked = true;
   }
 
 }]);
 
 
-mp4Controllers.controller('LlamaListController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getUser', '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getUser, $window) {
 
-  $scope.pickUser = function(a){
-      $scope.selectedUser = a;
-  }
+// Task Details
+mp4Controllers.controller('taskDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
+
+}]);
+
+
+mp4Controllers.controller('userListController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getUser', '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getUser, $window) {
+
   $scope.getAllUsers = function() {
       getUsers.get().success(function(data){
         $scope.users = data.data;
       })};
-
-  $scope.addTheTask = function(username, description, deadline, assignedUser){
-    addTask.add(username, description, deadline, assignedUser); //error check
-  };
 
   $scope.getAllUsers();
   $scope.deleteTheUser = function (a){
@@ -105,10 +122,36 @@ mp4Controllers.controller('LlamaListController', ['$scope', '$http', 'getUsers',
     //alert(user_id);
     $scope.selectedUser = user_id;
   }
+}]);
 
+
+// Add a Task
+mp4Controllers.controller('addTaskController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getUser', '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getUser, $window) {
+
+  $scope.getAllUsers = function() {
+      getUsers.get().success(function(data){
+        $scope.users = data.data;
+      })};
+
+  $scope.addTheTask = function(username, description, deadline, assignedUser, assignedUserID){
+    addTask.add(username, description, deadline, assignedUser, assignedUserID); //error check
+  };
+
+  $scope.getAllUsers();
 
 }]);
 
+// Add a user
+mp4Controllers.controller('AddUserController', ['$scope' , '$window' ,'$routeParams','addUser', function($scope, $window, $routeParams, addUser) {
+
+  $scope.addTheUser = function(a,b){
+    addUser.add(a,b); //need error check
+  };
+}]);
+
+
+
+// Settings
 mp4Controllers.controller('SettingsController', ['$scope' , '$window' , function($scope, $window) {
   $scope.url = $window.sessionStorage.baseurl;
 

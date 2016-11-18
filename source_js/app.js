@@ -4,11 +4,11 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/tasklist', {
     templateUrl: 'partials/tasklist.html',
-    controller: 'FirstController'
+    controller: 'taskListController'
   }).
   when('/edittask', {
     templateUrl: 'partials/edittask.html',
-    controller: 'FirstController'
+    controller: 'editTaskListController'
   }).
   when('/settings', {
     templateUrl: 'partials/settings.html',
@@ -16,26 +16,26 @@ app.config(['$routeProvider', function($routeProvider) {
   }).
   when('/userlist', {
     templateUrl: 'partials/userlist.html',
-    controller: 'LlamaListController'
+    controller: 'userListController'
   }).
   when('/adduser', {
     templateUrl: 'partials/adduser.html',
-    controller: 'SecondController'
+    controller: 'AddUserController'
   }).
   when('/addtask', {
     templateUrl: 'partials/addtask.html',
-    controller: 'LlamaListController'
+    controller: 'addTaskController'
   }).
   when('/userdetails/:selectedUser', {
     templateUrl: 'partials/userdetails.html',
-    controller: 'SecondController'
+    controller: 'userDetails'
   }).
-  when('/taskdetails', {
+  when('/taskdetails/:selectedTask', {
     templateUrl: 'partials/taskdetails.html',
-    controller: 'SecondController'
+    controller: 'taskDetails'
   }).
   otherwise({
     redirectTo: '/settings',
-    controller: 'LlamaListController'
+    controller: 'SettingsController'
   });
 }]);
