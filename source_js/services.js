@@ -35,6 +35,7 @@ mp4Services.factory('getUser', function($http, $window) {
     }
 });
 
+
 mp4Services.factory('getTasks', function($http, $window) {
     return {
         get : function(a) {
@@ -73,10 +74,7 @@ mp4Services.factory('addTask', function($http, $window) {
             //alert(a); // pass in name and email, check for errors too
             //alert(b);
             data = { name: username, description: description_input, deadline: deadline_input, assignedUserName: assignedUser_input, assignedUser: assignedUserID }; // should have the assigned user id too?
-            $http.post('http://www.uiucwp.com:4000/api/tasks', data).then(function()
-                { alert("Task " + username + " Created");}, 
-                function()
-                {alert("Task Already Exists!");});
+            return $http.post('http://www.uiucwp.com:4000/api/tasks', data)
         }
     }
 });
@@ -104,7 +102,7 @@ mp4Services.factory('deleteUser', function($http, $window) {
             //alert(a); // pass in name and email, check for errors too
             //alert(b);
             return $http.delete('http://www.uiucwp.com:4000/api/users/'+ a);
-    }}});
+}}});
 
 mp4Services.factory('deleteTask', function($http, $window) {
     return {
@@ -113,6 +111,53 @@ mp4Services.factory('deleteTask', function($http, $window) {
             //alert(a); // pass in name and email, check for errors too
             //alert(b);
             return $http.delete('http://www.uiucwp.com:4000/api/tasks/'+ a);
-    }}});
+}}});
+
+mp4Services.factory('getPendingUserTask', function($http, $window) {
+    return {
+        get : function(a) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            var stringQuotesA = "'"+a+"'";
+            console.log(stringQuotesA);
+            // http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where={"assignedUser":"582f5b11ea9279f470e22e7e","completed":false}
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where={"assignedUser":"582f5b11ea9279f470e22e7e","completed":false}');
+            //return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where{"assignedUser": ' + stringQuotesA + ',completed:false}');
+        }
+    }
+});
+
+mp4Services.factory('updatePendingTasks', function($http, $window) {
+    return {
+        put : function(userName, userEmail, userID, pendingTasksUpdated) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+           // var stringQuotesA = "'"+a+"'";
+            console.log("in update tasks");
+            // http://www.uiucwp.com:4000/api/users/582f5b11ea9279f470e22e7e
+            console.log(pendingTasksUpdated.length);
+
+            data = { name: userName, email: userEmail, pendingTasks: pendingTasksUpdated };
+            console.log(data);
+            console.log(userID)
+            return $http.put('http://www.uiucwp.com:4000/api/users/'+ userID, data);
+        }
+    }
+});
 
 
+mp4Services.factory('getUserSpecific', function($http, $window) {
+    return {
+        get : function(user_id, fieldToGet) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //alert("the user id is" + user_id);
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
+            var stringQuotesA = "'"+user_id+"'";
+            var quotesField = "'"+fieldToGet+"'";
+            console.log("in get user getUserSpecific")
+            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id":"582f5b11ea9279f470e22e7e"}&select={"email":1,"_id":0}'); 
+            //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
+        }
+    }
+});

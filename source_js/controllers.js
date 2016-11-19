@@ -126,19 +126,56 @@ mp4Controllers.controller('userListController', ['$scope', '$http', 'getUsers', 
 
 
 // Add a Task
-mp4Controllers.controller('addTaskController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getUser', '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getUser, $window) {
+mp4Controllers.controller('addTaskController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getPendingUserTask', 'getUserSpecific','updatePendingTasks',  '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getPendingUserTask, getUserSpecific, updatePendingTasks, $window) {
 
+$scope.userEmail= [];
   $scope.getAllUsers = function() {
       getUsers.get().success(function(data){
         $scope.users = data.data;
       })};
 
   $scope.addTheTask = function(username, description, deadline, assignedUser, assignedUserID){
-    addTask.add(username, description, deadline, assignedUser, assignedUserID); //error check
+    addTask.add(username, description, deadline, assignedUser, assignedUserID).success(function(data){
+    $scope.msg = data.message;
+    console.log($scope.msg);
+    if (assignedUser != "" ){
+      // make api call to get the user's pending tasks
+      // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
+      // put request on new pending tasks
+      console.log("getting the pending");
+      getPendingUserTask.get(assignedUserID).success(function(data){
+        console.log("after the getPendingUserTask");
+        $scope.pendingTasks = data.data;
+      
+      console.log("out");
+      console.log($scope.pendingTasks.length);
+      console.log($scope.pendingTasks[3]);
+      // first get user email
+      console.log("getting the email");
+      getUserSpecific.get(assignedUserID,"email").success(function(data){
+        console.log("works Useremail");
+        $scope.userEmail.push(_.chain(data.data).pluck('email').flatten().value().toString());
+        console.log($scope.userEmail);
+     
+      // now do put request with new array
+      console.log("doing put request");
+      updatePendingTasks.put(assignedUser,  $scope.userEmail, assignedUserID,$scope.pendingTasks).success(function(data){
+        $scope.msg2 = data.message;
+        console.log("the final message is " + $scope.msg2);
+      }).error(function(data){
+        $scope.msg3 = data.message;
+        console.log("the error message is " + $scope.msg3);
+      }); // error check
+      });
+       });
+    }
+    }); //error check
+    // now if this works I need to add the new task to the user's pending who it was assigned to
+
+
   };
 
   $scope.getAllUsers();
-
 }]);
 
 // Add a user
