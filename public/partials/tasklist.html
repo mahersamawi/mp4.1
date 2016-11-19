@@ -17,16 +17,21 @@
   </div>
   <div class="row">
     <p>Sort by:</p>
-    <select class="selectSort "ng-model="selectedSort" ng-options="x for x in sorts"></select>
+    <select class="selectSort "ng-model="selectedSort" ng-change="getNewResults()" ng-options="x for x in sorts"></select>
       <div class= "large-12 columns">
         <!-- Add different format for pending completed all -->
-        <label><input type="checkbox"  ng-true-value="false" ng-model="">ascending </label>
-        <label><input type="checkbox"  ng-true-value="true" ng-model="">descending</label>
-        <label><input type="checkbox"  ng-true-value="true" ng-model="">Pending</label>
-        <label><input type="checkbox"  ng-true-value="true" ng-model="">Completed</label>
-        <label><input type="checkbox"  ng-true-value="true" ng-model="">All</label>
+        <label><input type="radio"  value="1" ng-change="getNewResults()" ng-model="selectOrder">ascending </label>
+        <label><input type="radio"  value="-1" ng-change="getNewResults()" ng-model="selectOrder">descending</label>
       </div>
-      <ul class="pagination" role="menubar" aria-label="Pagination">
+      <div class= "large-12 columns text-right">
+        <label><input type="radio"  ng-change="getNewResults()" value ="false"ng-model="completed">Pending</label>
+        <label><input type="radio"   value="true" ng-change="getNewResults()" ng-model="completed">Completed</label>
+        <label><input type="radio"  value="" ng-change="getNewResults()" ng-model="completed">All</label>
+        {{selectedSort}}
+        {{selectOrder}}
+        {{completed}}
+      </div>
+      <ul class="pagination text-center" role="menubar" aria-label="Pagination">
         <li class="arrow unavailable" aria-disabled="true"><a href="" ng-click='getPrevTasks()'>&laquo; Previous</a></li>
         <li class="arrow"><a href="" ng-click="getNextTasks()">Next &raquo;</a></li>
       </ul>

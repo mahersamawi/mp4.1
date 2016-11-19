@@ -12,6 +12,26 @@ mp4Services.factory('CommonData', function(){
     }
 });
 
+mp4Services.factory('updateTheFuckingTask', function($http, $window) {
+    return {
+        put : function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            console.log(task_id);
+            console.log(task_name);
+            console.log(task_desc);
+            console.log(task_deadline);
+            console.log(task_assignedUserName);
+            console.log(assingedUserID);
+            console.log(task_completed);
+
+
+            data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUser: assingedUserID, assignedUserName: task_assignedUserName};
+            console.log(data);
+            return $http.put('http://www.uiucwp.com:4000/api/tasks/'+ task_id, data);
+        }
+    }
+});
+
 mp4Services.factory('getUsers', function($http, $window) {
     return {
         get : function() {
@@ -65,6 +85,51 @@ mp4Services.factory('getTasks', function($http, $window) {
     }
 });
 
+mp4Services.factory('getSortedTasks', function($http, $window) {
+    return {
+        get : function(skipNumber, isPending, isAscending, sortBy) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            sortByQuotes = "'"+sortBy+"'"; 
+            console.log("completed is " + isPending);
+            console.log("is isAscending is " + isAscending);
+            console.log("sortby is " + sortByQuotes);
+            if(isPending != ""){
+                console.log("in if");
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"completed":'+isPending+'}&select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
+            }
+            else{ // want all 
+                console.log("in else");
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
+            }
+        }
+    }
+});
+
+
+
+mp4Services.factory('getCount', function($http, $window) {
+    return {
+        get : function(skipNumber, isPending, isAscending, sortBy) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            sortByQuotes = "'"+sortBy+"'"; 
+            console.log("=============")
+            console.log("IN GET count");
+            console.log("=============")
+            console.log("completed is " + isPending);
+            console.log("is isAscending is " + isAscending);
+            console.log("sortby is " + sortByQuotes);
+            if(isPending != ""){
+                console.log("in if");
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"completed":'+isPending+'}&select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10&count=true');
+            }
+            else{ // want all 
+                console.log("in else");
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10count=true');
+            }
+        }
+    }
+});
+
 mp4Services.factory('getTask', function($http, $window) {
     return {
         get : function(a) {
@@ -79,15 +144,6 @@ mp4Services.factory('getTask', function($http, $window) {
     }
 });
 
-mp4Services.factory('getCount', function($http, $window) {
-    return {
-        get : function(a) {
-            var baseUrl = $window.sessionStorage.baseurl;
-            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
-            return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUser":1,"assignedUserName":1}&skip=0&limit=10&count=1');
-        }
-    }
-});
 mp4Services.factory('addTask', function($http, $window) {
     return {
         add : function(username, description_input, deadline_input, assignedUser_input, assignedUserID) {
@@ -166,7 +222,6 @@ mp4Services.factory('updatePendingTasks', function($http, $window) {
         }
     }
 });
-
 
 mp4Services.factory('getUserSpecific', function($http, $window) {
     return {

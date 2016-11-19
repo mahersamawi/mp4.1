@@ -1,7 +1,7 @@
 var mp4Controllers = angular.module('mp4Controllers', []);
 
 // edit Task
-mp4Controllers.controller('editTaskController', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getUsersSpecific', 'getTaskSpecific','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser,getUsersSpecific,getTaskSpecific, $window) {
+mp4Controllers.controller('editTaskController', ['$scope', '$http', 'getUserSpecific', 'getTaskSpecific', 'updateTheFuckingTask', 'getUsers', 'getPendingUserTask','updatePendingTasks','$window','$routeParams', function($scope, $http, updateTheFuckingTask,getUserSpecific,getPendingUserTask,getUsers,getTaskSpecific,updatePendingTasks, $window,$routeParams) {
   
 
   $scope.selectedSort = true;
@@ -23,18 +23,55 @@ mp4Controllers.controller('editTaskController', ['$scope', '$http' ,'CommonData'
     $scope.assignedUserName= _.chain(data.data).pluck('assignedUserName').value().toString();
       });
     // get the users
-    getUsersSpecific.get("name",true).success(function(data){
+    getUsers.get().success(function(data){
+      alert("hi");
         $scope.userList = data.data;
       });
-    $scope.updateTask = function(task_id, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed){
-      alert(task_id);
-      alert(task_desc);
-      alert(task_deadline);
-      alert(task_assignedUserName);
-      alert(assingedUserID);
-      alert(task_completed);
+    $scope.updateTheTask = function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed)
+    {
+      updateTheFuckingTask.put(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed).success(
+        function(data){
+      $scope.thefuckingmsg = data.message;
+      alert("the final message is " + $scope.thefuckingmsg);
+      if (task_assignedUserName != "" ){
+        // make api call to get the user's pending tasks
+        // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
+        // put request on new pending tasks
+        console.log("getting the pending");
+        getPendingUserTask.get(assignedUserID).success(function(data){
+          console.log("after the getPendingUserTask");
+          $scope.pendingTasks = data.data;
+        
+        console.log("out");
+        console.log($scope.pendingTasks.length);
+        console.log($scope.pendingTasks[3]);
+        // first get user email
+        console.log("getting the email");
+        getUserSpecific.get(assignedUserID,"email").success(function(data){
+        console.log("works Useremail");
+        $scope.userEmail = (_.chain(data.data).pluck('email').flatten().value().toString());
+        console.log("the email is: " +$scope.userEmail);
+        console.log("the email length: " +$scope.userEmail.length);
+        updatePendingTasks.put(task_assignedUserName,  $scope.userEmail, assignedUserID,$scope.pendingTasks).success(function(data){
+        $scope.msg2 = data.message;
+        console.log("the final message is " + $scope.msg2);
+      }).error(function(data){
+        $scope.msg3 = data.message;
+        console.log("the error message is " + $scope.msg3);
+     
+      // now do put request with new array
+      console.log("doing put request");
+    });
+    });
 
+      });
     }
+
+    });
+    }
+ //error check
+    // now if this works I need to add the new task to the user's pending who it was assigned to
+
   //$scope.name = $scope.taskPicked.name;
 
 }]);
@@ -43,40 +80,50 @@ mp4Controllers.controller('editTaskController', ['$scope', '$http' ,'CommonData'
 
 
 // Task List
-mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData', 'getTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, CommonData, getTasks, deleteTask, getCount, $window) {
-  $scope.data = "";
-  $scope.displayText = ""
+mp4Controllers.controller('taskListController', ['$scope', '$http', 'getSortedTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, getSortedTasks, deleteTask, getCount, $window) {
   $scope.resultsNumber = 0;
+  $scope.YesOrNo = ["Yes", "No"];
 
-  $scope.setData = function(){
-    CommonData.setData($scope.data);
-    $scope.displayText = "Data set"
-  };
+  $scope.selectOrder = "1";
+  $scope.completed = "false";
+  $scope.selectedSort = "name";
+  $scope.sorts = ["name", "assignedUserName", "dateCreated", "deadline"];
+  $scope.countResults = 0;
     $scope.getAllTasks = function(a) {
       // check bounds
-      if (parseInt(a) < 0){
+      if ($scope.resultsNumber < 0){
         a = 0;
         $scope.resultsNumber = 0;
       }
       // maybe have api call for each field needed? --> I do
-      getTasks.get(parseInt(a)).success(function(data){
+      //alert("here");
+
+      if ($scope.resultsNumber > $scope.countResults){
+        $scope.resultsNumber -= 10;
+        //alert("done");
+        return;
+      }
+      getSortedTasks.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
       $scope.tasks = data.data;
-    })};
-    $scope.selectedSort = "name";
-    $scope.sorts = ["name", "assignedUserName", "dateCreated", "deadline"];
-    $scope.selectedOrder = false;
-    $scope.getCountResults = function() {
-      return getCount.get().success(function(data){
-        return data.data;
+      getCount.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
+        $scope.countResults = data.data;
+        console.log("countResults is " + $scope.countResults);
         });
-      };
+    })};
     $scope.getAllTasks($scope.resultsNumber);
     $scope.getPrevTasks = function(){
       $scope.resultsNumber-= 10;
       $scope.getAllTasks($scope.resultsNumber);
     };
     $scope.getNextTasks = function(){
+      if( $scope.resultsNumber > $scope.countResults){
+        //alert("cant incrase");
+        return;}
       $scope.resultsNumber+= 10;
+      $scope.getAllTasks($scope.resultsNumber);
+    };
+    $scope.getNewResults = function(){
+      console.log("updating list");
       $scope.getAllTasks($scope.resultsNumber);
     };
 
@@ -92,7 +139,6 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData'
   }
 
 
-  $scope.YesOrNo = ["Yes", "No"];
 }]);
 
 
@@ -137,7 +183,6 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$ro
       }
   }
 
-    //$scope.doneNames = $scope.taskNames;
   $scope.showCompleted = function(){
     // api call to get the completed tasks
     $scope.buttonClicked = true;
@@ -145,13 +190,6 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$ro
 
 }]);
 
-/*
-      $scope.taskNames.push(_.chain(data.data).pluck('name').flatten().value().toString());
-      console.log("the len is " +$scope.taskNames.length);
-      $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
-      $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
-
-*/
 
 // Task Details
 mp4Controllers.controller('taskDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
@@ -245,7 +283,6 @@ mp4Controllers.controller('AddUserController', ['$scope' , '$window' ,'$routePar
     addUser.add(a,b); //need error check
   };
 }]);
-
 
 
 // Settings
