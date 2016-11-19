@@ -9,25 +9,26 @@
 </head>
 <body>
 	<div class="Header">
-		<h1 style="font-size:40px;"align="center">Add Task</h1>
+		<h1 style="font-size:40px;"align="center">Edit Task: {{taskPicked}} </h1>
 	</div>
 	<div class="list">
 		<div class="list">
-			<form>
+			<form ng-submit="updateTask(name,description,deadline,assignedNewUserName.name,assignedNewUserName._id, completed)">
 				<div class="row">
 					<div class="small-12 columns">
 						<span>Name</span>
-						<input ng-model="name" type="text" placeholder="The Current Value Should be here">
-						<span>Description</span>
-						<input ng-model="description" type="text" placeholder="Current Description">
+						<input ng-model="name" type="text">
+						<span>Description </span>
+						<input ng-model="description" type="text" >
 						<span>Deadline</span>
-						<input ng-model="Deadline" type="text" placeholder="Current DeadlineNeed to put Calendar">
-						<span>Assigned User</span>
-						<input ng-model="name" type="text" placeholder="Current User Drop Down Menu of Users Needed">
-						<span> Completed:</span>
-						<select> <option ng-repeat="x in YesOrNo">{{x}}</option></select>
+						<input ng-model="deadline" type="text">
+						<span>Assigned User: {{assignedUserName}}</span>
+						<select ng-model="assignedNewUserName" ng-options="y.name for y in userList"></select>
+						<span> Completed: {{completed}}</span>
+						<select ng-model="completed" ng-options="x for x in sorts"></select>
 						<div class="row text-center">
-							<a class="button" href="#/addtask">Submit(Doesn't do anything)</a>
+							<button type="submit" class="medium button green">Submit(Doesn't do anything Should be a Put request)
+							</button>
 						</div>
 					</div>
 				</div>

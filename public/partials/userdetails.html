@@ -19,12 +19,12 @@
  	<div class="row" ng-repeat="name in bsNAMES track by $index" >
  		<div class="row" > 
 	 		<div class="UserResults" >
-			 	<button class="buttonClass" ng-click="pickTask(id)"/> 
-				<a ng-href="#taskdetails/{{id}}">
+			 	<button class="buttonClass" ng-click="pickTask(taskID[$index])"/> 
+				<a ng-href="#taskdetails/{{taskID[$index]}}">
 					<h1 style="font-size:30px;"align="left">{{name}}</h1><br>
 					<h1 style="font-size:30px;"align="center">Deadline: {{deadlines[$index]}}</h1>
 				</a>
-				<a class="button alert" ng-click="">Completed</a>
+				<a class="button alert" ng-click="">Completed Needs to be implemented</a>
 			</div>
 		</div>
 	</div>
@@ -32,10 +32,7 @@
 		<a class="button" ng-click="showCompleted()">Show Completed Tasks</a>
 		<div class="UserResults" ng-show="buttonClicked">
 			<button class="buttonClass" ng-click="pickTask(id)"/> 
-			<a ng-href="#taskdetails/{{id}}">
-				<h1 style="font-size:30px;"align="left">hi</h1><br>
-				<h1 style="font-size:30px;"align="center">why</h1>
-			</a>
+			<a ng-href="#taskdetails/{{id}}"></a>
 		</div>
 
 	</div>

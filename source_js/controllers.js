@@ -1,10 +1,42 @@
 var mp4Controllers = angular.module('mp4Controllers', []);
 
 // edit Task
-mp4Controllers.controller('editTaskListController', ['$scope', '$http', 'CommonData', 'getTasks', 'deleteTask', 'getCount' ,'$window'  , function($scope, $http, CommonData, getTasks, deleteTask, getCount, $window) {
-  $scope.data = "";
-  $scope.displayText = ""
-  $scope.resultsNumber = 0;
+mp4Controllers.controller('editTaskController', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getUsersSpecific', 'getTaskSpecific','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser,getUsersSpecific,getTaskSpecific, $window) {
+  
+
+  $scope.selectedSort = true;
+  $scope.sorts = [true, false];
+  $scope.taskPicked = $routeParams.selectedTask;
+  getTaskSpecific.get($scope.taskPicked,"name").success(function(data){
+    $scope.name= _.chain(data.data).pluck('name').flatten().value().toString();
+      });
+    getTaskSpecific.get($scope.taskPicked,"description").success(function(data){
+    $scope.description= _.chain(data.data).pluck('description').flatten().value().toString();
+      });
+      getTaskSpecific.get($scope.taskPicked,"deadline").success(function(data){
+    $scope.deadline= _.chain(data.data).pluck('deadline').flatten().value().toString();
+      });
+    getTaskSpecific.get($scope.taskPicked,"completed").success(function(data){
+    $scope.completed= _.chain(data.data).pluck('completed').flatten().value().toString();
+      });
+    getTaskSpecific.get($scope.taskPicked,"assignedUserName").success(function(data){
+    $scope.assignedUserName= _.chain(data.data).pluck('assignedUserName').value().toString();
+      });
+    // get the users
+    getUsersSpecific.get("name",true).success(function(data){
+        $scope.userList = data.data;
+      });
+    $scope.updateTask = function(task_id, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed){
+      alert(task_id);
+      alert(task_desc);
+      alert(task_deadline);
+      alert(task_assignedUserName);
+      alert(assingedUserID);
+      alert(task_completed);
+
+    }
+  //$scope.name = $scope.taskPicked.name;
+
 }]);
 
 
@@ -26,6 +58,7 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData'
         a = 0;
         $scope.resultsNumber = 0;
       }
+      // maybe have api call for each field needed? --> I do
       getTasks.get(parseInt(a)).success(function(data){
       $scope.tasks = data.data;
     })};
@@ -53,6 +86,11 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData'
         $scope.getAllTasks();
       });
     };
+  $scope.pickTask = function(task_id){
+    //alert(user_id);
+    $scope.selectedTask = task_id;
+  }
+
 
   $scope.YesOrNo = ["Yes", "No"];
 }]);
@@ -117,6 +155,10 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$ro
 
 // Task Details
 mp4Controllers.controller('taskDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
+  $scope.taskPicked = $routeParams.selectedTask;
+  getTask.get($scope.taskPicked).success(function(data){
+        $scope.taskPicked = data.data;
+      });
 
 }]);
 

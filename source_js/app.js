@@ -6,9 +6,9 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/tasklist.html',
     controller: 'taskListController'
   }).
-  when('/edittask', {
+  when('/edittask/:selectedTask', {
     templateUrl: 'partials/edittask.html',
-    controller: 'editTaskListController'
+    controller: 'editTaskController'
   }).
   when('/settings', {
     templateUrl: 'partials/settings.html',

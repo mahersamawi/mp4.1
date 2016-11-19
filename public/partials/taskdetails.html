@@ -1,12 +1,21 @@
-<div class="list">
-  Second Controller
-  <form>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
-    <div class="text-center">
-      <button ng-click="getData()" class="button tiny info">Get Data</button>
-    </div>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+	<div class="Header" ng-repeat="task in taskPicked">
+	    <h1 style="font-size:30px;"align="center">{{task.name}}</h1>
+	    <h1 style="font-size:30px;"align="center">Deadline: {{task.deadline}}</h1>
+	    <h1 style="font-size:30px;"align="center">Assigned User: {{task.assignedUserName}}</h1>
+	    <h1 style="font-size:30px;"align="center">Completed: {{task.completed}}</h1>
+		<div class="row text-center">
+	    	<a class="button" ng-href="#edittask/{{task._id}}" >Edit Task</a>
+ 		</div>
+ 	</div>
 
-    {{data}}
-
-  </form>
-</div>
+</body>

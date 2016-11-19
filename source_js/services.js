@@ -21,6 +21,25 @@ mp4Services.factory('getUsers', function($http, $window) {
         }
     }
 });
+
+mp4Services.factory('getUsersSpecific', function($http, $window) {
+    return {
+        get : function(fieldToGet, includeID) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            var quotesField = "'"+fieldToGet+"'";
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            if(includeID){
+                //alert(quotesField);
+                return $http.get('http://www.uiucwp.com:4000/api/users?select={'+quotesField +':1, "_id":1}');
+            }
+            else // return just id field
+                {return $http.get('http://www.uiucwp.com:4000/api/users?select={'+quotesField +':1, "_id":0}');}
+
+
+        }
+    }
+});
+
 mp4Services.factory('getUser', function($http, $window) {
     return {
         get : function(user_id) {
@@ -54,7 +73,7 @@ mp4Services.factory('getTask', function($http, $window) {
             var stringQuotesA = "'"+ a.toString()+ "'";
             console.log("the new string is:" + stringQuotesA.trim());
             //alert(stringQuotesA);
-            // get a specific field
+            // get a specific field getTaskSpecific, it returns everything...
             return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA + '}');
         }
     }
@@ -164,3 +183,40 @@ mp4Services.factory('getUserSpecific', function($http, $window) {
         }
     }
 });
+
+
+mp4Services.factory('getTaskSpecific', function($http, $window) {
+    return {
+        get : function(task_id, fieldToGet) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //alert("the user id is" + user_id);
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
+            var stringQuotesA = "'"+task_id+"'";
+            var quotesField = "'"+fieldToGet+"'";
+            console.log("in get user getUserSpecific")
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA+'}&select={'+quotesField+':1,"_id":0}'); 
+            //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
+        }
+    }
+});
+/*mp4Services.factory('getUsersMultipleSpecific', function($http, $window) {
+    return {
+        get : function(fieldToGet1, includeID) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            alert("ji");
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
+            var quotesField = "'"+fieldToGet1+"'";
+            if (includeID){
+                alert("he");
+                return $http.get('http://www.uiucwp.com:4000/api/users?select={'+quotesField+':1,"_id":1}'); 
+
+            }
+            else
+                return $http.get('http://www.uiucwp.com:4000/api/users?select={'+quotesField+':1,"_id":0'); 
+            //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
+        }
+    }
+});*/
+

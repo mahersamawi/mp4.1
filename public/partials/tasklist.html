@@ -31,8 +31,8 @@
         <li class="arrow"><a href="" ng-click="getNextTasks()">Next &raquo;</a></li>
       </ul>
       <div class="UserResults" ng-repeat="task in tasks">
-        <button class="buttonClass" ng-click=""/> 
-        <a ng-href="#taskdetails/{{SomeTask}}">
+        <button class="buttonClass" ng-click="pickTask(task._id)"/> 
+        <a ng-href="#taskdetails/{{task._id}}">
           <h3>Task Name: {{task.name}}</h3>
           <h3>Assigned to: {{task.assignedUserName}}</h3><br>
         </a> 
