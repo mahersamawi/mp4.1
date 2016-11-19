@@ -12,17 +12,17 @@
 	    <h1 style="font-size:50px;"align="center">User Profile</h1><br>
 	    <h1 style="font-size:40px;"align="center">{{user.name}}</h1>
  		<h1 style="font-size:30px;"align="center">{{user.email}}</h1>
- 		<h1 style="font-size:10px;"align="center" ng-repeat="task in user.pendingTasks" ng-init="getTaskNames(task)"></h1>
+ 		<h1 style="font-size:10px;"align="center" ng-init="getTaskNames(user.pendingTasks)"></h1>
  		<h1 style="font-size:50px;"align="left">Pending Tasks</h1><br>
  	</div>
 
- 	<div class="row" ng-repeat="name in taskNames" >
- 		<div class="row" ng-repeat ="id in taskID">
-	 		<div class="UserResults" ng-repeat="date in deadlines">
+ 	<div class="row" ng-repeat="name in bsNAMES track by $index" >
+ 		<div class="row" > 
+	 		<div class="UserResults" >
 			 	<button class="buttonClass" ng-click="pickTask(id)"/> 
 				<a ng-href="#taskdetails/{{id}}">
 					<h1 style="font-size:30px;"align="left">{{name}}</h1><br>
-					<h1 style="font-size:30px;"align="center">Deadline: {{date}}</h1>
+					<h1 style="font-size:30px;"align="center">Deadline: {{deadlines[$index]}}</h1>
 				</a>
 				<a class="button alert" ng-click="">Completed</a>
 			</div>

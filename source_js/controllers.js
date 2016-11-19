@@ -62,9 +62,9 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', 'CommonData'
 mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
   $scope.data = "";
   $scope.added = "";
-  $scope.taskNames = [];
   $scope.deadlines = [];
   $scope.taskID = [];
+  $scope.bsNAMES = [];
   $scope.buttonClicked = false;
   $scope.userPicked = $routeParams.selectedUser;
   $scope.getData = function(){
@@ -81,15 +81,25 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$ro
   // Each click makes api call
 
   $scope.getTaskNames = function(task_ids){
-    // make get call
-    getTask.get(task_ids).success(function(data){
-      //alert("here");
-      $scope.taskNames.push(_.chain(data.data).pluck('name').flatten().value().toString());
-      $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
-      $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
-      console.log($scope.taskNames.length);
-    });
+        //alert("called");
+        console.log(task_ids.length);
+        for (i = 0; i < task_ids.length; i ++){
+        console.log("in loop" + task_ids[i]);
+        getTask.get(task_ids[i]).success(function(data){
+          console.log("Adding the following: " + _.chain(data.data).pluck('name').flatten().value().toString());
+          $scope.bsNAMES.push(_.chain(data.data).pluck('name').flatten().value().toString());
+          $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
+          $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
+          console.log("the len of deadlines is "+ $scope.deadlines.length);
+          console.log("the len of taskID is "+ $scope.taskID.length);
+          console.log("the len of bsNAMES is "+ $scope.bsNAMES.length);
+
+
+        });  
+      }
   }
+
+    //$scope.doneNames = $scope.taskNames;
   $scope.showCompleted = function(){
     // api call to get the completed tasks
     $scope.buttonClicked = true;
@@ -97,7 +107,13 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' ,'CommonData' , '$ro
 
 }]);
 
+/*
+      $scope.taskNames.push(_.chain(data.data).pluck('name').flatten().value().toString());
+      console.log("the len is " +$scope.taskNames.length);
+      $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
+      $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
 
+*/
 
 // Task Details
 mp4Controllers.controller('taskDetails', ['$scope', '$http' ,'CommonData' , '$routeParams','addUser', 'getUser', 'getTask','$window', function($scope, $http, addUser, $routeParams, CommonData, getUser, getTask, $window) {
@@ -128,7 +144,7 @@ mp4Controllers.controller('userListController', ['$scope', '$http', 'getUsers', 
 // Add a Task
 mp4Controllers.controller('addTaskController', ['$scope', '$http', 'getUsers', 'deleteUser', 'addTask','getPendingUserTask', 'getUserSpecific','updatePendingTasks',  '$window' , function($scope, $http,  getUsers, deleteUser, addTask, getPendingUserTask, getUserSpecific, updatePendingTasks, $window) {
 
-$scope.userEmail= [];
+//$scope.userEmail= [];
   $scope.getAllUsers = function() {
       getUsers.get().success(function(data){
         $scope.users = data.data;
@@ -154,8 +170,10 @@ $scope.userEmail= [];
       console.log("getting the email");
       getUserSpecific.get(assignedUserID,"email").success(function(data){
         console.log("works Useremail");
-        $scope.userEmail.push(_.chain(data.data).pluck('email').flatten().value().toString());
-        console.log($scope.userEmail);
+        $scope.userEmail = (_.chain(data.data).pluck('email').flatten().value().toString());
+        console.log("the email is: " +$scope.userEmail);
+        console.log("the email length: " +$scope.userEmail.length);
+
      
       // now do put request with new array
       console.log("doing put request");

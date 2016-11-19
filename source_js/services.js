@@ -51,8 +51,10 @@ mp4Services.factory('getTask', function($http, $window) {
         get : function(a) {
             var baseUrl = $window.sessionStorage.baseurl;
             //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
-            var stringQuotesA = "'"+a+"'";
+            var stringQuotesA = "'"+ a.toString()+ "'";
+            console.log("the new string is:" + stringQuotesA.trim());
             //alert(stringQuotesA);
+            // get a specific field
             return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA + '}');
         }
     }
@@ -121,7 +123,7 @@ mp4Services.factory('getPendingUserTask', function($http, $window) {
             var stringQuotesA = "'"+a+"'";
             console.log(stringQuotesA);
             // http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where={"assignedUser":"582f5b11ea9279f470e22e7e","completed":false}
-            return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where={"assignedUser":"582f5b11ea9279f470e22e7e","completed":false}');
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where={"assignedUser": ' + stringQuotesA +',"completed":false}');
             //return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"_id":1}&where{"assignedUser": ' + stringQuotesA + ',completed:false}');
         }
     }
@@ -139,7 +141,8 @@ mp4Services.factory('updatePendingTasks', function($http, $window) {
 
             data = { name: userName, email: userEmail, pendingTasks: pendingTasksUpdated };
             console.log(data);
-            console.log(userID)
+            console.log(userID);
+            console.log(userEmail);
             return $http.put('http://www.uiucwp.com:4000/api/users/'+ userID, data);
         }
     }
@@ -156,7 +159,7 @@ mp4Services.factory('getUserSpecific', function($http, $window) {
             var stringQuotesA = "'"+user_id+"'";
             var quotesField = "'"+fieldToGet+"'";
             console.log("in get user getUserSpecific")
-            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id":"582f5b11ea9279f470e22e7e"}&select={"email":1,"_id":0}'); 
+            return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA+'}&select={'+quotesField+':1,"_id":0}'); 
             //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
         }
     }
