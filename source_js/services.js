@@ -12,9 +12,24 @@ mp4Services.factory('CommonData', function(){
     }
 });
 
-mp4Services.factory('updateTheFuckingTask', function($http, $window) {
+mp4Services.factory('ThegetTaskSpecific', function($http, $window) {
     return {
-        put : function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed) {
+        getIT : function(task_id, fieldToGet) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //alert("the user id is" + user_id);
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
+            var stringQuotesA = "'"+task_id+"'";
+            var quotesField = "'"+fieldToGet+"'";
+            alert(task_id);
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA+'}&select={'+quotesField+':1,"_id":0}'); 
+            //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
+        }
+    }
+});
+mp4Services.factory('work', function($http, $window) {
+    return {
+        doit: function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed) {
             var baseUrl = $window.sessionStorage.baseurl;
             console.log(task_id);
             console.log(task_name);
@@ -239,22 +254,6 @@ mp4Services.factory('getUserSpecific', function($http, $window) {
     }
 });
 
-
-mp4Services.factory('getTaskSpecific', function($http, $window) {
-    return {
-        get : function(task_id, fieldToGet) {
-            var baseUrl = $window.sessionStorage.baseurl;
-            //alert("the user id is" + user_id);
-            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
-            // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
-            var stringQuotesA = "'"+task_id+"'";
-            var quotesField = "'"+fieldToGet+"'";
-            console.log("in get user getUserSpecific")
-            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA+'}&select={'+quotesField+':1,"_id":0}'); 
-            //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
-        }
-    }
-});
 /*mp4Services.factory('getUsersMultipleSpecific', function($http, $window) {
     return {
         get : function(fieldToGet1, includeID) {

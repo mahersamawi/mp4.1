@@ -27,9 +27,6 @@
         <label><input type="radio"  ng-change="getNewResults()" value ="false"ng-model="completed">Pending</label>
         <label><input type="radio"   value="true" ng-change="getNewResults()" ng-model="completed">Completed</label>
         <label><input type="radio"  value="" ng-change="getNewResults()" ng-model="completed">All</label>
-        {{selectedSort}}
-        {{selectOrder}}
-        {{completed}}
       </div>
       <ul class="pagination text-center" role="menubar" aria-label="Pagination">
         <li class="arrow unavailable" aria-disabled="true"><a href="" ng-click='getPrevTasks()'>&laquo; Previous</a></li>
