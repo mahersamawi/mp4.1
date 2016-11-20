@@ -17,22 +17,26 @@
  	</div>
 
  	<div class="row" ng-repeat="name in bsNAMES track by $index" >
- 		<div class="row" > 
+ 		<div class="row" ng-repeat="user in userPicked"> 
 	 		<div class="UserResults" >
 			 	<button class="buttonClass" ng-click="pickTask(taskID[$index])"/> 
 				<a ng-href="#taskdetails/{{taskID[$index]}}">
 					<h1 style="font-size:30px;"align="left">{{name}}</h1><br>
 					<h1 style="font-size:30px;"align="center">Deadline: {{deadlines[$index]}}</h1>
+					{{descriptionVal}}
 				</a>
-				<a class="button alert" ng-click="">Completed Needs to be implemented</a>
+				<a class="button alert" ng-click="markAsCompleted(taskID[$index], name, descriptionVal,deadlines[$index],user.name,user.email,user.pendingTasks)">Completed Needs to be implemented</a>
 			</div>
 		</div>
 	</div>
 	<div class="row text-center" >
 		<a class="button" ng-click="showCompleted()">Show Completed Tasks</a>
-		<div class="UserResults" ng-show="buttonClicked">
-			<button class="buttonClass" ng-click="pickTask(id)"/> 
-			<a ng-href="#taskdetails/{{id}}"></a>
+		<div class="UserResults" ng-show="buttonClicked" ng-repeat="complete in completedTasks">
+			<button class="buttonClass" ng-click="pickTask(complete._id)"/> 
+			<a ng-href="#taskdetails/{{complete._id}}">
+			<h1 style="font-size:30px;"align="left">{{complete.name}}</h1><br>
+			<h1 style="font-size:30px;"align="center">Deadline: {{complete.deadline}}</h1>
+		</a>
 		</div>
 
 	</div>

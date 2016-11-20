@@ -69,7 +69,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
     }
 
     });
-    }
+  }
  //error check
     // now if this works I need to add the new task to the user's pending who it was assigned to
 
@@ -144,16 +144,24 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
 
 
 // User Details
-mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$routeParams','addUser', 'getUser', 'getTask', function($scope, $http, $window, $routeParams, addUser,  getUser, getTask) {
+mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$routeParams','addUser', 'getUser', 'getTask' ,'showTheCompletedTasks', 'work', 'updatePendingTasks' ,function($scope, $http, $window, $routeParams, addUser,  getUser, getTask, showTheCompletedTasks, work, updatePendingTasks) {
   $scope.added = "";
   $scope.deadlines = [];
   $scope.taskID = [];
   $scope.bsNAMES = [];
+  $scope.descriptionVal = [];
   $scope.buttonClicked = false;
-  $scope.userPicked = $routeParams.selectedUser;
-  getUser.get($scope.userPicked).success(function(data){
+  //$scope.userPicked = $routeParams.selectedUser;
+  
+  $scope.theUserInfo = function(){
+    getUser.get($routeParams.selectedUser).success(function(data){
         $scope.userPicked = data.data;
-      });
+      })};
+  $scope.theUserInfo();
+    /*  $scope.getAllUsers = function() {
+      getUsers.get().success(function(data){
+        $scope.users = data.data;
+      })};*/
 
   // have function to get the user from the _id in the selectedUser
   // name and email and list of pending tasks
@@ -171,18 +179,48 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$route
           $scope.bsNAMES.push(_.chain(data.data).pluck('name').flatten().value().toString());
           $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString());
           $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
+          $scope.descriptionVal.push(_.chain(data.data).pluck('description').flatten().value().toString());
           console.log("the len of deadlines is "+ $scope.deadlines.length);
           console.log("the len of taskID is "+ $scope.taskID.length);
           console.log("the len of bsNAMES is "+ $scope.bsNAMES.length);
-
-
         });  
       }
+  }
+  $scope.markAsCompleted = function(taskID,taskname,taskDesc, taskDeadline, UserName, userEmail, userPendingTasks){
+    console.log(userPendingTasks.length);
+    // api put call 
+    // keep all the same just change completed to true
+    // task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed
+    work.doit(taskID, taskname, taskDesc, taskDeadline, UserName, $routeParams.selectedUser, true).success(function(data){
+      $scope.response = data.message;
+      console.log($scope.response);
+      // now update user pending
+      // userName, userEmail, userID, pendingTasksUpdated
+      // first find the element and remove the element from the array
+      var index = userPendingTasks.indexOf(taskID);
+      if (index > -1){
+        userPendingTasks.splice(index,1);
+        //newArray = userPendingTasks;
+      }
+        console.log("the new array len is " + userPendingTasks.length);
+      //userName, userEmail, userID, pendingTasksUpdated
+      updatePendingTasks.put(UserName, userEmail, $routeParams.selectedUser, userPendingTasks).success(function(data){
+       $scope.response2 = data.message;
+        console.log($scope.response2);
+        // now reload the pending tasks
+       $scope.theUserInfo();
+      });
+    });
   }
 
   $scope.showCompleted = function(){
     // api call to get the completed tasks
-    $scope.buttonClicked = true;
+    console.log($routeParams.selectedUser);
+    showTheCompletedTasks.get($routeParams.selectedUser).success(function(data){
+      $scope.completedTasks = data.data;
+      console.log("in showCompleted");
+      $scope.buttonClicked = true;
+    })
   }
 
 }]);

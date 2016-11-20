@@ -159,6 +159,24 @@ mp4Services.factory('getTask', function($http, $window) {
     }
 });
 
+
+
+
+mp4Services.factory('showTheCompletedTasks', function($http, $window) {
+    return {
+        get : function(a) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            var stringQuotesA = "'"+ a+ "'";
+            console.log("the new string in showthecompleted is:" + stringQuotesA);
+            //alert(stringQuotesA);
+            // get a specific field getTaskSpecific, it returns everything...
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"completed": true, "assignedUser":'+ stringQuotesA+'}&select={"_id":1, "name":1, "deadline":1}');
+        }
+    }
+});
+
+
 mp4Services.factory('addTask', function($http, $window) {
     return {
         add : function(username, description_input, deadline_input, assignedUser_input, assignedUserID) {
