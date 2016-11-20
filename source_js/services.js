@@ -38,9 +38,12 @@ mp4Services.factory('work', function($http, $window) {
             console.log(task_assignedUserName);
             console.log(assingedUserID);
             console.log(task_completed);
-
-
-            data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUser: assingedUserID, assignedUserName: task_assignedUserName};
+            if (assingedUserID == -999){// user will be deleted
+                console.log("user will be deleted");
+                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed};
+            }
+            else
+                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUser: assingedUserID, assignedUserName: task_assignedUserName};
             console.log(data);
             return $http.put('http://www.uiucwp.com:4000/api/tasks/'+ task_id, data);
         }

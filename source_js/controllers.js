@@ -3,7 +3,7 @@ var mp4Controllers = angular.module('mp4Controllers', []);
 // edit Task
 mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routeParams', 'work','getUserSpecific', 'ThegetTaskSpecific', 'getUsers', 'getPendingUserTask','updatePendingTasks' , function($scope, $window, $routeParams, work, getUserSpecific, ThegetTaskSpecific,  getUsers, getPendingUserTask, updatePendingTasks) {
   
-
+  //$scope.assignedUserName = "";
   $scope.selectedSort = true;
   $scope.sorts = [true, false];
   $scope.taskPicked = $routeParams.selectedTask;
@@ -22,7 +22,10 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
     $scope.completed= _.chain(data.data).pluck('completed').flatten().value().toString();
       });
     ThegetTaskSpecific.getIT($scope.taskPicked,"assignedUserName").success(function(data){
-    $scope.assignedUserName= _.chain(data.data).pluck('assignedUserName').value().toString();
+    $scope.assignedUserNameOriginal= _.chain(data.data).pluck('assignedUserName').value().toString();
+      });
+        ThegetTaskSpecific.getIT($scope.taskPicked,"assignedUser").success(function(data){
+    $scope.assignedUser= _.chain(data.data).pluck('assignedUser').value().toString();
       });
     // get the users
     getUsers.get().success(function(data){
@@ -31,6 +34,15 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
       });
     $scope.updateTheTask = function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed)
     {
+      console.log(task_id);
+      console.log(task_name);
+      console.log("the assigned username is " + task_assignedUserName);
+      console.log("the user id is " + assignedUserID);
+      if ( task_assignedUserName == undefined){
+        console.log("user not changed");
+        task_assignedUserName = $scope.assignedUserNameOriginal;
+        assignedUserID = $scope.assignedUser;
+      }
       work.doit(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed).success(function(data){
       $scope.thefuckingmsg = data.message;
       alert("the f*** message is " + $scope.thefuckingmsg);
@@ -45,7 +57,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
         
         console.log("out");
         console.log($scope.pendingTasks.length);
-        console.log($scope.pendingTasks[3]);
+        alert("the pending task is " +$scope.pendingTasks[0]);
         // first get user email
         console.log("getting the email");
         getUserSpecific.get(assignedUserID,"email").success(function(data){
@@ -135,7 +147,7 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
       });
     };
   $scope.pickTask = function(task_id){
-    //alert(user_id);
+    alert(task_id);
     $scope.selectedTask = task_id;
   }
 
@@ -146,16 +158,15 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
 // User Details
 mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$routeParams','addUser', 'getUser', 'getTask' ,'showTheCompletedTasks', 'work', 'updatePendingTasks' ,function($scope, $http, $window, $routeParams, addUser,  getUser, getTask, showTheCompletedTasks, work, updatePendingTasks) {
   $scope.added = "";
-  $scope.deadlines = [];
-  $scope.taskID = [];
-  $scope.bsNAMES = [];
-  $scope.descriptionVal = [];
   $scope.buttonClicked = false;
   //$scope.userPicked = $routeParams.selectedUser;
   
   $scope.theUserInfo = function(){
     getUser.get($routeParams.selectedUser).success(function(data){
         $scope.userPicked = data.data;
+        //console.log("The pending tasks are : " + _.chain(data.data).pluck('pendingTasks').flatten().value().toString().split(',').length);
+          //$scope.bsNAMES.push(_.chain(data.data).pluck('name').flatten().value().toString());
+        $scope.getTaskNames(_.chain(data.data).pluck('pendingTasks').flatten().value().toString().split(','));
       })};
   $scope.theUserInfo();
     /*  $scope.getAllUsers = function() {
@@ -169,8 +180,17 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$route
   // Show completed tasks, api call 
   // Each click makes api call
 
+    $scope.pickTask = function(task_id){
+    alert("the task id is " + task_id);
+    $scope.selectedTask = task_id;
+  }
+
   $scope.getTaskNames = function(task_ids){
         //alert("called");
+        $scope.deadlines = [];
+        $scope.taskID = [];
+        $scope.bsNAMES = [];
+        $scope.descriptionVal = [];
         console.log(task_ids.length);
         for (i = 0; i < task_ids.length; i ++){
         console.log("in loop" + task_ids[i]);
@@ -182,12 +202,16 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$route
           $scope.descriptionVal.push(_.chain(data.data).pluck('description').flatten().value().toString());
           console.log("the len of deadlines is "+ $scope.deadlines.length);
           console.log("the len of taskID is "+ $scope.taskID.length);
-          console.log("the len of bsNAMES is "+ $scope.bsNAMES.length);
+          console.log("the len of bsNAMES is "+ $scope.taskID[0]);
+          console.log("the len of bsNAMES is "+ $scope.taskID[1]);
+          console.log("the len of bsNAMES is "+ $scope.taskID[2]);
         });  
       }
   }
   $scope.markAsCompleted = function(taskID,taskname,taskDesc, taskDeadline, UserName, userEmail, userPendingTasks){
     console.log(userPendingTasks.length);
+    console.log("the id is in markAsCompleted " + taskID);
+    console.log("the description is in markAsCompleted " +taskDesc);
     // api put call 
     // keep all the same just change completed to true
     // task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed
@@ -219,6 +243,7 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$route
     showTheCompletedTasks.get($routeParams.selectedUser).success(function(data){
       $scope.completedTasks = data.data;
       console.log("in showCompleted");
+      console.log($scope.completedTasks);
       $scope.buttonClicked = true;
     })
   }
@@ -235,8 +260,8 @@ mp4Controllers.controller('taskDetails', ['$scope', '$http', '$window','$routePa
 
 }]);
 
-
-mp4Controllers.controller('userListController', ['$scope', '$http', '$window', 'getUsers', 'deleteUser', 'addTask','getUser' , function($scope, $http, $window, getUsers, deleteUser, addTask, getUser ) {
+// user list
+mp4Controllers.controller('userListController', ['$scope', '$http', '$window', 'getUsers', 'deleteUser', 'addTask','getUser', 'getPendingUserTask', 'work' ,'getTask' , function($scope, $http, $window, getUsers, deleteUser, addTask, getUser, getPendingUserTask, work, getTask ) {
 
   $scope.getAllUsers = function() {
       getUsers.get().success(function(data){
@@ -244,10 +269,42 @@ mp4Controllers.controller('userListController', ['$scope', '$http', '$window', '
       })};
 
   $scope.getAllUsers();
-  $scope.deleteTheUser = function (a){
-    deleteUser.delete(a).success(function(data){
-    $scope.getAllUsers();
+  $scope.deleteTheUser = function (userID){
+    // must go through the pending tasks and change tasks to unassigned 
+    // then delete user 
+    // first get the user pending tasks
+    getPendingUserTask.get(userID).success(function(data){
+      $scope.pendingTasks = _.chain(data.data).pluck('_id').flatten().value().toString().split(',');
+      console.log($scope.pendingTasks.length);
+      console.log(JSON.stringify($scope.pendingTasks[0]));
+      // put api request call for every task with name unassigned
+      for (i = 0; i<$scope.pendingTasks.length; i++){
+        console.log("in for loop");
+        JSON.stringify($scope.pendingTasks[i]);
+        var cur_task = $scope.pendingTasks[i];
+        console.log("the cur task is " +cur_task);
+        getTask.get(cur_task).success(function(data){
+          console.log("done with getTask");
+          var task_desc = _.chain(data.data).pluck('description').flatten().value().toString();
+          var task_name = _.chain(data.data).pluck('name').flatten().value().toString();
+          var task_deadline = _.chain(data.data).pluck('deadline').flatten().value().toString();
+          var task_completed = false;
+          var task_new_user = "unassigned";
+          console.log(task_desc);
+          console.log(task_name);
+          console.log(task_deadline);
+          console.log(task_completed);
+          console.log(task_new_user);
+          console.log("calling work doit");
+          work.doit(cur_task,task_name, task_desc, task_deadline,task_new_user, -999, false ).success(function(data){
+            console.log("Task should be updated");
+          });
+        });
+      }
+      deleteUser.delete(userID).success(function(data){
+      $scope.getAllUsers();
     });
+  });
   };
   $scope.pickUser = function(user_id){
     //alert(user_id);

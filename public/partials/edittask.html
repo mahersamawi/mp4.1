@@ -22,9 +22,9 @@
 						<input ng-model="description" type="text" >
 						<span>Deadline</span>
 						<input ng-model="deadline" type="text">
-						<span>Assigned User: {{assignedUserName}}</span>
+						<span>Assigned User: {{assignedUserNameOriginal}}</span>
 						<select ng-model="assignedNewUserName" ng-options="y.name for y in userList"></select>
-						<span> Completed: {{completed}}</span>
+						<span>Completed: {{completed}}</span>
 						<select ng-model="completed" ng-options="x for x in sorts"></select>
 						<div class="row text-center">
 							<button type="submit" class="medium button green">Submit(Doesn't do anything Should be a Put request)

@@ -12,20 +12,20 @@
 	    <h1 style="font-size:50px;"align="center">User Profile</h1><br>
 	    <h1 style="font-size:40px;"align="center">{{user.name}}</h1>
  		<h1 style="font-size:30px;"align="center">{{user.email}}</h1>
- 		<h1 style="font-size:10px;"align="center" ng-init="getTaskNames(user.pendingTasks)"></h1>
+ 		<h1 style="font-size:10px;"align="center"></h1>
  		<h1 style="font-size:50px;"align="left">Pending Tasks</h1><br>
  	</div>
 
- 	<div class="row" ng-repeat="name in bsNAMES track by $index" >
- 		<div class="row" ng-repeat="user in userPicked"> 
+ 	<div class="row" ng-repeat="user in userPicked" >
+ 		<div class="row" ng-repeat="name in bsNAMES track by $index"> 
 	 		<div class="UserResults" >
 			 	<button class="buttonClass" ng-click="pickTask(taskID[$index])"/> 
-				<a ng-href="#taskdetails/{{taskID[$index]}}">
+			 	
+				<a ng-href="#taskdetails/{{selectedTask}}">
 					<h1 style="font-size:30px;"align="left">{{name}}</h1><br>
 					<h1 style="font-size:30px;"align="center">Deadline: {{deadlines[$index]}}</h1>
-					{{descriptionVal}}
 				</a>
-				<a class="button alert" ng-click="markAsCompleted(taskID[$index], name, descriptionVal,deadlines[$index],user.name,user.email,user.pendingTasks)">Completed Needs to be implemented</a>
+				<a class="button alert" ng-click="markAsCompleted(taskID[$index], name, descriptionVal[$index],deadlines[$index],user.name,user.email,user.pendingTasks)">Completed Needs to be implemented</a>
 			</div>
 		</div>
 	</div>
