@@ -10,7 +10,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
   console.log("shoul call the function");
   ThegetTaskSpecific.getIT($scope.taskPicked,"name").success(function(data){
     console.log("logginh name");
-    $scope.name= data.data;
+    $scope.name= _.chain(data.data).pluck('name').flatten().value().toString();
       });
     ThegetTaskSpecific.getIT($scope.taskPicked,"description").success(function(data){
     $scope.description= _.chain(data.data).pluck('description').flatten().value().toString();
@@ -26,7 +26,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
       });
     // get the users
     getUsers.get().success(function(data){
-      alert("hi");
+      console.log("in get users ");
         $scope.userList = data.data;
       });
     $scope.updateTheTask = function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed)

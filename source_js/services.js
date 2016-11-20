@@ -21,7 +21,7 @@ mp4Services.factory('ThegetTaskSpecific', function($http, $window) {
             // http://www.uiucwp.com:4000/api/users?where={"_id": "55099652e5993a350458b7b7"} 
             var stringQuotesA = "'"+task_id+"'";
             var quotesField = "'"+fieldToGet+"'";
-            alert(task_id);
+            //alert(task_id);
             return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA+'}&select={'+quotesField+':1,"_id":0}'); 
             //return $http.get('http://www.uiucwp.com:4000/api/users?where={"_id": ' + stringQuotesA + '}&select={' + quotesField+':1}');
         }
