@@ -50,6 +50,31 @@ mp4Services.factory('work', function($http, $window) {
     }
 });
 
+mp4Services.factory('workSpecial', function($http, $window) {
+    return {
+        doit: function(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assingedUserID, task_completed) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            console.log("in work special");
+            console.log("orginal task_id is : " + task_id);
+            //console.log("new id is " + task_id.replace((/\"/g, "")) );
+            console.log(task_name);
+            console.log(task_desc);
+            console.log(task_deadline);
+            console.log(task_assignedUserName);
+            console.log(assingedUserID);
+            console.log(task_completed);
+            if (assingedUserID == -999){// user will be deleted
+                console.log("user will be deleted");
+                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed};
+            }
+            else
+                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUser: assingedUserID, assignedUserName: task_assignedUserName};
+            console.log(data);
+            return $http.put('http://www.uiucwp.com:4000/api/tasks/'+ task_id, data);
+        }
+    }
+});
+
 mp4Services.factory('getUsers', function($http, $window) {
     return {
         get : function() {
@@ -154,10 +179,24 @@ mp4Services.factory('getTask', function($http, $window) {
             var baseUrl = $window.sessionStorage.baseurl;
             //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
             var stringQuotesA = "'"+ a.toString()+ "'";
-            console.log("the new string is:" + stringQuotesA.trim());
+            console.log("the new string is:" + stringQuotesA);
             //alert(stringQuotesA);
             // get a specific field getTaskSpecific, it returns everything...
             return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + stringQuotesA + '}');
+        }
+    }
+});
+
+mp4Services.factory('getTaskString', function($http, $window) {
+    return {
+        get : function(a) {
+            var baseUrl = $window.sessionStorage.baseurl;
+            //return $http.get(baseUrl+'/users?select={"name": 1,"_id":0,"email":1}');
+            //var stringQuotesA = "'"+ a.toString()+ "'";
+            console.log("the new string is:" + a);
+            //alert(stringQuotesA);
+            // get a specific field getTaskSpecific, it returns everything...
+            return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"_id": ' + a + '}');
         }
     }
 });
