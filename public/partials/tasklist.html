@@ -36,9 +36,9 @@
         <button class="buttonClass" ng-click="pickTask(task._id)"/> 
         <a ng-href="#taskdetails/{{task._id}}">
           <h3>Task Name: {{task.name}}</h3>
-          <h3>Assigned to: {{task.assignedUserName}}</h3><br>
+          <h3>Assigned to: {{task.assignedUserName}} with id {{task.assignedUser}}</h3><br>
         </a> 
-        <a class="button alert" ng-click="deleteTheTask(task._id)">Delete Task</a>
+        <a class="button alert" ng-click="deleteTheTask(task._id,task.assignedUserName, task.assignedUser)">Delete Task</a>
       </div>
   </div> 
 

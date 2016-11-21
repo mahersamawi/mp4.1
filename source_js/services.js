@@ -138,11 +138,11 @@ mp4Services.factory('getSortedTasks', function($http, $window) {
             console.log("sortby is " + sortByQuotes);
             if(isPending != ""){
                 console.log("in if");
-                return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"completed":'+isPending+'}&select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?where={"completed":'+isPending+'}&select={"name":1,"_id":1,"assignedUserName":1,"assignedUser":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
             }
             else{ // want all 
                 console.log("in else");
-                return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUserName":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
+                return $http.get('http://www.uiucwp.com:4000/api/tasks?select={"name":1,"_id":1,"assignedUserName":1,"assignedUser":1}&sort={'+sortByQuotes+':'+isAscending+'}&skip='+skipNumber+'&limit=10');
             }
         }
     }

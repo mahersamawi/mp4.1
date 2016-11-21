@@ -45,7 +45,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
       }
       work.doit(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed).success(function(data){
       $scope.thefuckingmsg = data.message;
-      alert("the f*** message is " + $scope.thefuckingmsg);
+      alert($scope.thefuckingmsg);
       if (task_assignedUserName != "" ){
         // make api call to get the user's pending tasks
         // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
@@ -93,10 +93,11 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
 
 
 // Task List
-mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', 'getSortedTasks', 'deleteTask', 'getCount'  , function($scope, $window, $http, getSortedTasks, deleteTask, getCount) {
+mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', 'getSortedTasks', 'deleteTask', 'getCount' , 'ThegetTaskSpecific' ,'getUserSpecific','getPendingUserTask', 'updatePendingTasks', function($scope, $window, $http, getSortedTasks, deleteTask, getCount,ThegetTaskSpecific, getUserSpecific, getPendingUserTask,updatePendingTasks) {
   $scope.resultsNumber = 0;
   $scope.YesOrNo = ["Yes", "No"];
 
+  $scope.taskCompleted;
   $scope.selectOrder = "1";
   $scope.completed = "false";
   $scope.selectedSort = "name";
@@ -108,19 +109,15 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
         a = 0;
         $scope.resultsNumber = 0;
       }
-      // maybe have api call for each field needed? --> I do
-      //alert("here");
-
       if ($scope.resultsNumber > $scope.countResults){
         $scope.resultsNumber -= 10;
-        //alert("done");
         return;
       }
       getSortedTasks.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
-      $scope.tasks = data.data;
-      getCount.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
-        $scope.countResults = data.data;
-        console.log("countResults is " + $scope.countResults);
+        $scope.tasks = data.data;
+        getCount.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
+          $scope.countResults = data.data;
+          console.log("countResults is " + $scope.countResults);
         });
     })};
     $scope.getAllTasks($scope.resultsNumber);
@@ -141,13 +138,54 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
     };
 
 
-    $scope.deleteTheTask = function(a){
-      deleteTask.delete(a).success(function(data){
-        $scope.getAllTasks();
+    $scope.deleteTheTask = function(task_id, taskAssignedUserName, taskAssignedUserID){
+      // check if the task is completed or if user == unassigned or userid = ""
+      // first get if the task is completed
+     ThegetTaskSpecific.getIT(task_id,"completed").success(function(data){
+        $scope.taskCompleted = (_.chain(data.data).pluck('completed').flatten().value().toString());
+        // some edge guesses ?
+
+        if ($scope.taskCompleted == "true" || taskAssignedUserName == "unassigned" || taskAssignedUserID == "" ||
+                                            taskAssignedUserName == undefined || taskAssignedUserID == undefined  ){
+          alert("Just straight up delete it since its completed or user is unassigned");
+          deleteTask.delete(task_id).success(function(data){
+            $scope.getAllTasks();
+          });
+          return;
+        }
+        // get the user pending tasks
+        //remove task_id from it 
+        // put api request with new pending tasks (need userEmail)
+        alert("looks like some more work needs to be done");
+        getUserSpecific.get(taskAssignedUserID,"email").success(function(data){
+          alert("got the user email");
+          $scope.userEmail = (_.chain(data.data).pluck('email').flatten().value().toString());
+          // get user pending tasks
+          alert("got the user email " + $scope.userEmail );
+          getPendingUserTask.get(taskAssignedUserID).success(function(data){
+            $scope.pendingTasks = (_.chain(data.data).pluck('_id').flatten().value().toString().split(','));
+             var index = $scope.pendingTasks.indexOf(task_id);
+             alert("line 165");
+             alert("old array len is " + $scope.pendingTasks.length);
+              if (index > -1){
+                $scope.pendingTasks.splice(index,1);
+                //newArray = userPendingTasks;
+              }
+              console.log("the new array len is " + $scope.pendingTasks.length);
+              //userName, userEmail, userID, pendingTasksUpdated
+              alert($scope.pendingTasks.length);
+              updatePendingTasks.put(taskAssignedUserName,$scope.userEmail,taskAssignedUserID,$scope.pendingTasks).success(function(data){
+                alert("updated tasks..");
+              });
+          });
+        });
+        deleteTask.delete(task_id).success(function(data){
+          $scope.getAllTasks();
+        });
       });
     };
   $scope.pickTask = function(task_id){
-    alert(task_id);
+    //alert(task_id);
     $scope.selectedTask = task_id;
   }
 
@@ -376,7 +414,8 @@ mp4Controllers.controller('addTaskController', ['$scope', '$http', '$window' ,'g
        });
     }
     }); //error check
-    // now if this works I need to add the new task to the user's pending who it was assigned to
+    // XXXXXXX
+    //now if this works I need to add the new task to the user's pending who it was assigned to
 
 
   };
