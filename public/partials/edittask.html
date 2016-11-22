@@ -16,11 +16,11 @@
 			<form ng-submit="updateTheTask(taskPicked,name,description,deadline,assignedNewUserName.name,assignedNewUserName._id, completed)">
 				<div class="row">
 					<div class="small-12 columns">
-						<span>Name</span>
+						<span>Name</span><small>*</small>
 						<input ng-model="name" type="text">
 						<span>Description </span>
 						<input ng-model="description" type="text" >
-						<span>Deadline</span>
+						<span>Deadline</span><small>*</small>
 						<!--<input ng-model="deadline" type="text">-->
 						<datepicker date-format="yyyy-MM-dd" selector="form-control">
   							 <div class="input-group">

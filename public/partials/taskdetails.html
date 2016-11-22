@@ -11,7 +11,7 @@
 	<div class="Header" ng-repeat="task in taskPicked">
 	    <h1 style="font-size:30px;"align="center">{{task.name}}</h1>
 	    <h1 style="font-size:30px;"align="center">Deadline: {{task.deadline}}</h1>
-	    <h1 style="font-size:30px;"align="center">Assigned User: {{task.assignedUserName}}</h1>
+	    <h1 style="font-size:30px;"align="center">Assigned to: {{task.assignedUserName}}</h1>
 	    <h1 style="font-size:30px;"align="center">Completed: {{task.completed}}</h1>
 		<div class="row text-center">
 	    	<a class="button" ng-href="#edittask/{{task._id}}" >Edit Task</a>
