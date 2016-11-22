@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-	<div class="Header" ng-repeat="user in userPicked">
-	    <h1 style="font-size:50px;"align="center">User Profile</h1><br>
-	    <h1 style="font-size:40px;"align="center">{{user.name}}</h1>
- 		<h1 style="font-size:30px;"align="center">{{user.email}}</h1>
- 		<h1 style="font-size:10px;"align="center"></h1>
- 		<h1 style="font-size:50px;"align="left">Pending Tasks</h1><br>
+	<h1 style="font-size:50px;"align="center">User Profile</h1><br>
+	<div class="Header2" ng-repeat="user in userPicked">
+	    <h1 style="font-size:40px;"align="left">{{user.name}}</h1>
+ 		<h1 style="font-size:30px;"align="left">{{user.email}}</h1>
  	</div>
+ 	<h1 style="font-size:50px;"align="left">Pending Tasks</h1><br>
 
  	<div class="row" ng-repeat="user in userPicked" >
  		<div class="row" ng-repeat="name in bsNAMES track by $index"> 

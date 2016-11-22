@@ -13,6 +13,23 @@ small{
 	margin-bottom: 5px;
 }
 
+.Header2{
+	width: 50%;
+	@include set_pads(10px,10px,10px,10px);
+	margin: 0 auto;
+	background-color: $gray !important;
+}
+.arrow1{
+	font-size:30px;
+	@include set_pads(20px,20px,20px,80px);
+	margin: 0 auto;
+	background-color: $blue;
+}
+.active {
+    //font-size: 20px;
+    color: $blue;
+    text-decoration: none;
+}
 #Header{
 	width: 50%;
 	margin: 0 auto;

@@ -1,1 +1,7 @@
 // Insert your mixins
+@mixin set_pads ($pad-top, $pad-bot, $pad-left, $pad-right) {
+  	padding-top: $pad-top;
+	padding-left:  $pad-left;
+	padding-right: $pad-right;
+	padding-bottom: $pad-bot;
+}

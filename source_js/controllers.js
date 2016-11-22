@@ -72,7 +72,8 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
 mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', 'getSortedTasks', 'deleteTask', 'getCount' , 'ThegetTaskSpecific' ,'getUserSpecific','getPendingUserTask', 'updatePendingTasks', function($scope, $window, $http, getSortedTasks, deleteTask, getCount,ThegetTaskSpecific, getUserSpecific, getPendingUserTask,updatePendingTasks) {
   $scope.resultsNumber = 0;
   $scope.YesOrNo = ["Yes", "No"];
-
+  $scope.click = 1;
+  $scope.clickBack = 0;
   $scope.taskCompleted;
   $scope.selectOrder = "1";
   $scope.completed = "false";
@@ -81,10 +82,13 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
   $scope.countResults = 0;
     $scope.getAllTasks = function(a) {
       // check bounds
-      if ($scope.resultsNumber < 0){
+      if ($scope.resultsNumber <= 0){
         a = 0;
         $scope.resultsNumber = 0;
+        $scope.clickBack = 0;
+        $scope.click = 1;
       }
+      //$scope.click = true;
       console.log("the resultsNumber is " + $scope.resultsNumber);
       getSortedTasks.get(parseInt(a), $scope.completed, $scope.selectOrder, $scope.selectedSort).success(function(data){
         $scope.tasks = data.data;
@@ -92,6 +96,13 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
         getCount.get($scope.completed).success(function(data){
             console.log("back from getCount");
           $scope.countResults = data.data;
+          if( ($scope.resultsNumber + 10) > $scope.countResults){
+            //alert("Settings to false");
+            $scope.click = 0;
+            //return false;
+        }
+        else
+            $scope.click = 1;
         console.log("after get count , $scope.countResults is " + $scope.countResults);
         }).error(function(data){
             //alert(data.message);
@@ -99,20 +110,29 @@ mp4Controllers.controller('taskListController', ['$scope', '$http', '$window', '
     })};
     $scope.getAllTasks($scope.resultsNumber);
     $scope.getPrevTasks = function(){
+    $scope.click = 1;
       $scope.resultsNumber-= 10;
       $scope.getAllTasks($scope.resultsNumber);
     };
+
     $scope.getNextTasks = function(){
         console.log("In get next tasks, $scope.resultsNumber is " + $scope.resultsNumber);
-      if( $scope.resultsNumber > $scope.countResults){
+      if( ($scope.resultsNumber + 10) > $scope.countResults){
+        //alert("Settings to false");
+        $scope.click = 0;
         return;
       }
+      $scope.clickBack = 1;
       $scope.resultsNumber+= 10;
+      //alert("Settings to true");
+      $scope.click = true;
       $scope.getAllTasks($scope.resultsNumber);
     };
     $scope.getNewResults = function(){
       console.log("updating list");
       $scope.getAllTasks($scope.resultsNumber);
+      $scope.resultsNumber = 10;
+
     };
 
     $scope.deleteTheTask = function(task_id, taskAssignedUserName, taskAssignedUserID){
@@ -290,7 +310,7 @@ mp4Controllers.controller('userListController', ['$scope', '$http', '$window', '
             workSpecial.doit(JSON.stringify($scope.pendingTasks[i]).replace(/\"/g, ""),task_name[i], task_desc[i], task_deadline[i],task_new_user[i], -999, false ).success(function(data){
               console.log("Task should be updated");
           }).error(function(data){
-            alert(data.message);
+            //alert(data.message);
             //alert("unable to update task...");
           });
           }

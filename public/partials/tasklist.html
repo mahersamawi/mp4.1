@@ -29,8 +29,8 @@
         <label><input type="radio"  value="" ng-change="getNewResults()" ng-model="completed">All</label>
       </div>
       <ul class="pagination text-center" role="menubar" >
-        <li class="arrow button" aria-disabled="true"><a ng-click='getPrevTasks()'>&laquo; Prev</a></li>
-        <li class="arrow button"><a ng-click="getNextTasks()">Next &raquo;</a></li>
+        <li><a class="arrow1"  ng-style="{'background-color':clickBack == 1 ?  '#1a1aff': '#ffffff'}"ng-click="getPrevTasks()">&laquo; Prev</a></li>
+        <li><a class="arrow1"  ng-style="{'background-color':click == 1 ?  '#1a1aff': '#ffffff'}"ng-click="getNextTasks()">Next &raquo;</a></li>
       </ul>
       <div class="UserResults" ng-repeat="task in tasks">
         <button class="buttonClass" ng-click="pickTask(task._id)"/> 
@@ -40,5 +40,4 @@
         </a> 
         <a class="button alert" ng-click="deleteTheTask(task._id,task.assignedUserName, task.assignedUser)">Delete Task</a>
       </div>
-  </div> 
 </body>

@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-	<div class="Header" ng-repeat="task in taskPicked">
-	    <h1 style="font-size:30px;"align="center">{{task.name}}</h1>
-	    <h1 style="font-size:30px;"align="center">Deadline: {{task.deadline}}</h1>
-	    <h1 style="font-size:30px;"align="center">Assigned to: {{task.assignedUserName}}</h1>
-	    <h1 style="font-size:30px;"align="center">Completed: {{task.completed}}</h1>
+	<div class="Header2" ng-repeat="task in taskPicked">
+	    <h1 style="font-size:30px;"align="left">{{task.name}}</h1>
+	    <h1 style="font-size:30px;"align="left">Deadline: {{task.deadline}}</h1>
+	    <h1 style="font-size:30px;"align="left">Assigned to: {{task.assignedUserName}}</h1>
+	    <h1 style="font-size:30px;"align="left">Completed: {{task.completed}}</h1>
 		<div class="row text-center">
 	    	<a class="button" ng-href="#edittask/{{task._id}}" >Edit Task</a>
  		</div>
