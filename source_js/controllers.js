@@ -38,7 +38,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
         assignedUserID = $scope.assignedUser;
       }
       work.doit(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed).success(function(data){
-          //alert(data.message);
+          alert(data.message);
           if (task_assignedUserName != "" ){
             // make api call to get the user's pending tasks
             // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
@@ -321,7 +321,7 @@ mp4Controllers.controller('addTaskController', ['$scope', '$http', '$window' ,'g
 
   $scope.addTheTask = function(username, description, deadline, assignedUser, assignedUserID){
         addTask.add(username, description, deadline, assignedUser, assignedUserID).success(function(data){
-       //alert(data.message);
+       alert(data.message);
         if (assignedUser != "" ){
             // make api call to get the user's pending tasks
             // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
