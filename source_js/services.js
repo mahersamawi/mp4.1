@@ -35,7 +35,7 @@ mp4Services.factory('workSpecial', function($http, $window) {
             console.log("in work special");
             if (assingedUserID == -999){// user will be deleted
                 console.log("user will be deleted");
-                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed};
+                data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUserName: "unassigned", assignedUser: ""};
             }
             else
                 data = { name: task_name, description: task_desc, deadline: task_deadline, completed: task_completed, assignedUser: assingedUserID, assignedUserName: task_assignedUserName};

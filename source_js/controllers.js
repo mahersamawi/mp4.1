@@ -38,7 +38,7 @@ mp4Controllers.controller('editTaskController', ['$scope', '$window', '$routePar
         assignedUserID = $scope.assignedUser;
       }
       work.doit(task_id, task_name, task_desc, task_deadline, task_assignedUserName, assignedUserID, task_completed).success(function(data){
-          alert(data.message);
+          //alert(data.message);
           if (task_assignedUserName != "" ){
             // make api call to get the user's pending tasks
             // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
@@ -198,7 +198,7 @@ mp4Controllers.controller('userDetails', ['$scope', '$http' , '$window', '$route
           console.log("Adding the following: " + _.chain(data.data).pluck('name').flatten().value().toString());
           $scope.bsNAMES.push(_.chain(data.data).pluck('name').flatten().value().toString());
           $scope.deadlines.push(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
-          alert(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
+          //alert(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
           $scope.taskID.push(_.chain(data.data).pluck('_id').flatten().value().toString());
           $scope.descriptionVal.push(_.chain(data.data).pluck('description').flatten().value().toString());
         });  
@@ -284,11 +284,14 @@ mp4Controllers.controller('userListController', ['$scope', '$http', '$window', '
            task_desc.push(_.chain(data.data).pluck('description').flatten().value().toString());
            task_name.push(_.chain(data.data).pluck('name').flatten().value().toString());
            task_deadline.push(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
-           alert(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
+           //alert(_.chain(data.data).pluck('deadline').flatten().value().toString().split("T")[0]);
            task_new_user = "unassigned";
           for(i = 0; i <$scope.pendingTasks.length; i++){
             workSpecial.doit(JSON.stringify($scope.pendingTasks[i]).replace(/\"/g, ""),task_name[i], task_desc[i], task_deadline[i],task_new_user[i], -999, false ).success(function(data){
               console.log("Task should be updated");
+          }).error(function(data){
+            alert(data.message);
+            //alert("unable to update task...");
           });
           }
         });
@@ -318,7 +321,7 @@ mp4Controllers.controller('addTaskController', ['$scope', '$http', '$window' ,'g
 
   $scope.addTheTask = function(username, description, deadline, assignedUser, assignedUserID){
         addTask.add(username, description, deadline, assignedUser, assignedUserID).success(function(data){
-        alert(data.message);
+       //alert(data.message);
         if (assignedUser != "" ){
             // make api call to get the user's pending tasks
             // append this new task_id (how to get it? -> by getting all tasks assigned to the user)
