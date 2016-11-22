@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="Header">
-		<h1 style="font-size:40px;"align="center">Edit Task: {{taskPicked}} </h1>
+		<h1 style="font-size:40px;"align="center">Edit Task</h1>
 	</div>
 	<div class="list">
 		<div class="list">
@@ -21,13 +21,21 @@
 						<span>Description </span>
 						<input ng-model="description" type="text" >
 						<span>Deadline</span>
-						<input ng-model="deadline" type="text">
+						<!--<input ng-model="deadline" type="text">-->
+						<datepicker date-format="yyyy-MM-dd" selector="form-control">
+  							 <div class="input-group">
+        						<input ng-model="deadline" class="form-control" placeholder="Choose a date"/>
+        							<span class="input-group-addon" style="cursor: pointer">
+        								<i class="fa fa-lg fa-calendar"></i>
+       								</span>
+    						</div>
+						</datepicker><br>
 						<span>Assigned User: {{assignedUserNameOriginal}}</span>
 						<select ng-model="assignedNewUserName" ng-options="y.name for y in userList"></select>
 						<span>Completed: {{completed}}</span>
 						<select ng-model="completed" ng-options="x for x in sorts"></select>
 						<div class="row text-center">
-							<button type="submit" class="medium button green">Submit(Doesn't do anything Should be a Put request)
+							<button type="submit" class="medium button green">Submit
 							</button>
 						</div>
 					</div>
